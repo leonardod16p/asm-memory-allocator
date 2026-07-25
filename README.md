@@ -30,3 +30,7 @@ O controle de fluxo é dividido em sub-rotinas específicas para processamento d
 - sumMatrix: Realiza a soma aritmética elemento a elemento de duas matrizes, armazenando o resultado no espaço de memória da primeira matriz.
 - multiplyMatrix: Implementa a lógica de multiplicação de matrizes através de loops aninhados e cálculos de offset de memória.
 - toString: Realiza o processo inverso da toNumber, convertendo os resultados numéricos de volta para caracteres ASCII para que possam ser impressos no terminal.
+
+## Debugging 
+
+Gosto de depurar o binário do programa usando ferramentas de engenharia reversa. Elas facilitam o acompanhamento do fluxo de execução e o monitoramento dos valores na memória.  
