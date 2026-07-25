@@ -1,4 +1,9 @@
 global toNumber
+
+extern tamanhoBuffer
+extern inputBuffer
+extern byteConverted
+
 section .text
 
 toNumber:
