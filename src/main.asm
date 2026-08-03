@@ -1,10 +1,20 @@
 %include "inc/macros.inc"
 extern toNumber
 
+extern sumMatrix
+extern multiplyMatrix
+
+
 global tamanhoBuffer
 global inputBuffer
 global byteConverted
 
+global matriz1PtrInicio
+global matriz2PtrInicio
+global matriz1PtrFim
+global matriz2PtrFim
+global numeroColunasA
+global numeroColunasB
 
 section .data
 	msgNumeroLinhasColunasA: db `Digite o numero de linhas e o numero de colunas da primeira matriz \n`
