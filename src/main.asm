@@ -1,13 +1,18 @@
+default rel
+
 %include "inc/macros.inc"
 extern toNumber
+extern toString
 
 extern sumMatrix
 extern multiplyMatrix
+extern creatingMatrix
 
 
 global tamanhoBuffer
 global inputBuffer
 global byteConverted
+global printableMatrixSum
 
 global matriz1PtrInicio
 global matriz2PtrInicio
@@ -15,6 +20,10 @@ global matriz1PtrFim
 global matriz2PtrFim
 global numeroColunasA
 global numeroColunasB
+
+
+%define i r13
+
 
 section .data
 	msgNumeroLinhasColunasA: db `Digite o numero de linhas e o numero de colunas da primeira matriz \n`
@@ -96,5 +105,90 @@ _start:
 	call toNumber
 	mov [numeroColunasB], al
     SYS_WRITE 1, numeroColunasB, 1
+
+    ;;------------------------------------------------------------------------------------------------------------------------------------------------
+    ;;------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+    ;;Alocando memoria para matriz A
+    mov rcx, numeroLinhasA
+	mov rdx, numeroColunasA
+	SYS_BRK matriz1PtrInicio, 3, numeroLinhasA, numeroColunasA				;;6 eh o numero de bits deslocados. Com isso, teremos espaco de 2^6 = 64 bytes para cada elementos da matriz
+	;;salvando o endereco do ultimo elemento da matriz
+	mov [matriz1PtrFim], rax
+
+
+	mov rcx, numeroLinhasB
+    mov rdx, numeroColunasB
+	;;Alocando memoria para matriz B
+    SYS_BRK matriz2PtrInicio, 3, numeroLinhasB, numeroColunasB
+	;;salvando o endereco do ultimo elemento da matriz
+	mov [matriz2PtrFim], rax
+
+
+    ;;-----Vamos inserir os elementos na matriz--------------------------------------------------------------------
+    ;;--------------------------------------------------------------------------------------------------------------
+
+	lea rax, [matriz1PtrInicio]			;;Em matriz1Ptr temos um ponteiro. Primeiro carregamos esse endereco em rax
+	mov rax, [rax]						;;Carregamos o valor no endereco apontado por esse ponteiro em rax
+	push rax
+
+	
+	
+	SYS_WRITE 1, pedeElementos, msgSize
+	
+	xor i, i
+
+	;;--MATRIZ-A--------
+	mov rcx, [matriz1PtrInicio]
+	mov rdx, [matriz1PtrFim] 
+	;;push rcx
+	;;push rdx
+
+	call creatingMatrix
+
+	xor i, i
+
+	;;--MATRIZ-B--------
+
+    mov rcx, [matriz2PtrInicio]
+    mov rdx, [matriz2PtrFim]
+    ;;push rcx
+    ;;push rdx
+
+    call creatingMatrix
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+    ;;-----Qual operacao ira realizar nas matrizes?----------------------------------------------------------------
+    ;;--------------------------------------------------------------------------------------------------------------
+    SYS_WRITE 1, pedeOperacao, msgSize3
+	
+	SYS_READ 0, operacaoEscolhida, 2
+
+	operations:
+		
+		cmp byte [operacaoEscolhida], 0x2B			;;+ ascii
+		jnz .notSum
+		call sumMatrix
+		.notSum:
+		
+		cmp byte [operacaoEscolhida], 0x2A			;;* ascii
+		jnz .notMultiply
+		call multiplyMatrix
+		.notMultiply:
+
+    conversao:
+		call toString      
+
+	print:
+		SYS_WRITE 1, printableMatrixSum, 200
 
     EXIT 
