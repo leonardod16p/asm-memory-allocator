@@ -41,4 +41,5 @@ Gosto de depurar o binário do programa usando ferramentas de engenharia reversa
 
 - Preciso encapsular as funcionalidades relevantes em procedimentos free e malloc.
   - por enquanto, free vai simplesmente desfazer a última alocação.
+  - criar uma pilha que armazena os endereço iniciais e finais(?) de alocação - teremos uma estrutura de dados que vai monitorar a alocação. Por enquanto, o mais simples seria permitir apenas a desalocação de endereços no topo.
 - Tirar o hardcoded no procedimento da multiplicação de matrizes.
