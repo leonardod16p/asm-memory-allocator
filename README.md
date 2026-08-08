@@ -36,3 +36,9 @@ O controle de fluxo é dividido em sub-rotinas específicas para processamento d
 ## Debugging 
 
 Gosto de depurar o binário do programa usando ferramentas de engenharia reversa. Elas facilitam o acompanhamento do fluxo de execução e o monitoramento dos valores na memória.  
+
+### To Do
+
+- Preciso encapsular as funcionalidades relevantes em procedimentos free e malloc.
+  - por enquanto, free vai simplesmente desfazer a última alocação.
+- Tirar o hardcoded no procedimento da multiplicação de matrizes.
