@@ -59,6 +59,16 @@ section .matrizB bss read write
     matriz2PtrFim: resq 1
 
 section .pilha bss read write
+
+	;;----- program break2
+	;;criei uma matriz e precisei
+	;;----- program break1
+	;;por enquanto o tamanho da pilha eh fixo
+	;;---- pilhaFim
+	;;botei alguma coisa
+	;; ----- pilhainicio
+
+
 	;;a pilha eh uma estrutura simples que permite operacao de push e pop
 	;;problema: se eu alocar 8 bytes
 	pilhaPtrInicio: resq 1
