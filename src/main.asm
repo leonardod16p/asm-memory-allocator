@@ -59,7 +59,7 @@ section .matrizB bss read write
     matriz2PtrFim: resq 1
 
 section .pilha bss read write
-
+	;;tamanho fixo de 200 enderecos, 100 enderecos de inicio e 100 enderecos de fim 
 	;;----- program break2
 	;;criei uma matriz e precisei
 	;;----- program break1
@@ -77,7 +77,12 @@ section .pilha bss read write
 	pilhaPtrInicioTopo: resq 1 ;; inicio do ultimo dado alocado
 	pilhaPtrFimTopo: resq 1 ;; fim do ultimo dado alocado
 	;;monitorar mais o que?
-	
+	;; logica da pilha: aloco memoria vamos ter o enderco de inicio e fim (= program break)
+	;;por enquanto n temos nenhum dado na pilha
+	;; quando alocar memoria p dado
+	;; vou atualizar o ptr fim topo p endereco seguinte ()
+	;;vou mudar o valor do endereco do inicio do topo p conter o endereco desse dado  
+	;; itera esse processo
 
 section .text
 
