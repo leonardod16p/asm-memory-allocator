@@ -58,6 +58,17 @@ section .matrizB bss read write
     matriz2PtrInicio: resq 1
     matriz2PtrFim: resq 1
 
+section .pilha bss read write
+	;;a pilha eh uma estrutura simples que permite operacao de push e pop
+	;;problema: se eu alocar 8 bytes
+	pilhaPtrInicio: resq 1
+	pilhaPtrFim: resq 1
+	;; tem que ser um endereco entre inicio e fim da pilha
+	pilhaPtrInicioTopo: resq 1 ;; inicio do ultimo dado alocado
+	pilhaPtrFimTopo: resq 1 ;; fim do ultimo dado alocado
+	;;monitorar mais o que?
+	
+
 section .text
 
 global _start
