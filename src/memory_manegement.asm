@@ -8,6 +8,16 @@ extern pilhaPtrFim
 extern pilhaPtrInicioTopo 
 extern pilhaPtrFimTopo 
 
+%define MAX_ALLOCS 100
+%define RECORD_BYTES 16
+%define REC_USER_PTR 0
+%define REC_OLD_BRK 8
+
+section .bss
+align 8
+allocStack: resb MAX_ALLOCS * RECORD_BYTES
+allocCount: resq 1
+
 section .text
 
 ;;nossa alocacao de memomria deve responder a nossa estrutura de dados pilha
