@@ -30,6 +30,52 @@ malloc:
 ;;pedir p kernel mover o break 
 ;;confirmar que a chamada funcionou
 ;;guardar o registro e retornar rax
+malloc:
+
+    test rdi, rdi
+    jz .null
+
+    cmp qword [rel allocCount], MAX_ALLOCS
+    jae .null
+
+    mov r8, rdi                  ; guardar o tamanho pedido
+    mov eax, 12                  ; syscall brk
+    xor edi, edi                 ; brk(0): consultar o break atual
+    syscall
+
+    mov rsi, rax                 ; salvar o break antigo
+    mov r9, rax                  ; começar a região nesse endereço
+
+    add r9, 7
+    and r9, -8                   ; alinhar o endereço a 8 bytes
+    add r8, 7
+    and r8, -8                   ; arredondar o tamanho a 8 bytes
+
+    mov r10, r9
+    add r10, r8                  ; novo break = início + tamanho
+    mov eax, 12
+    mov rdi, r10
+    syscall                      ; pedir ao kernel para expandir o heap
+
+    cmp rax, r10
+    jne .null                    ; se o break não chegou ao pedido, falhou
+
+    mov rcx, [rel allocCount]
+    shl rcx, 4                   ; índice × 16 bytes por registro
+    lea rdx, [rel allocStack]
+    add rdx, rcx                 ; endereço do próximo registro
+
+    mov [rdx + REC_USER_PTR], r9
+    mov [rdx + REC_OLD_BRK], rsi
+    inc qword [rel allocCount]
+
+    mov rax, r9                   ; retornar o ponteiro
+    ret
+
+.null:
+    xor eax, eax                  ; retornar NULL
+    ret
+
 
 free:
 
