@@ -84,3 +84,31 @@ free:
 ;;tbm vou precisar atualizar a pilha. agora o inicio Topo
 ;;ALERTA parece q desse jeito eu perco a informacao quando eu for excluir
 ;; eu sei qual o tamanho eu teria q reduzir? eu defini como resq, certo?
+
+    test rdi, rdi
+    jz .done                     ; free(null) não faz nada
+
+    mov rcx, [rel allocCount]
+    test rcx, rcx
+    jz .done                     ; não tem alocacoes ativas
+
+    dec rcx                      ; indice do registro no topo
+    shl rcx, 4                   ; indice x 16 bytes
+    lea rdx, [rel allocStack]
+    add rdx, rcx                 ; endereco do registro do topo
+
+    cmp [rdx + REC_USER_PTR], rdi
+    jne .done                    ; so aceita o ponteiro do topo
+
+    mov rsi, [rdx + REC_OLD_BRK] ; recuperar o break anterior
+    mov eax, 12
+    mov rdi, rsi
+    syscall                      ; pedir ao kernel para recuar o heap
+
+    cmp rax, rsi
+    jne .done                    ; se falhar manter o registro
+
+    dec qword [rel allocCount]   ; retirar o registro do topo
+
+.done:
+    ret
